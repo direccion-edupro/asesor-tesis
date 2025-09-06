@@ -26,6 +26,12 @@ h1 { color: #2c3e50; }
 .stage.overdue .stage-header { background-color: #f8d7da; border-color: #f5c6cb; }
 .stage.overdue .deadline-text { color: #721c24; font-weight: bold; }
 .status-badge { font-size: 0.8em; padding: 4px 8px; border-radius: 12px; font-weight: bold; color: #fff; flex-shrink: 0; }
+/* 🔴 Estado vencido */
+.vencido {
+  background-color: #fde2e2 !important;
+  border: 1px solid #f5b5b5 !important;
+}
+
 .status-badge.completed { background-color: #28a745; }
 .status-badge.active { background-color: #007bff; }
 .status-badge.locked { background-color: #6c757d; }
@@ -78,3 +84,133 @@ h1 { color: #2c3e50; }
 .add-task-form button:hover {
     background-color: #0056b3;
 }
+/* 🎨 Banner principal */
+.banner {
+  background: linear-gradient(135deg, #2c3e50, #3498db);
+  color: #fff;
+  text-align: center;
+  padding: 80px 20px 60px;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+.banner h1 {
+  font-size: 3rem;
+  margin: 0 0 10px;
+}
+.banner p {
+  font-size: 1.15rem;
+  opacity: .95;
+  margin: 0 0 20px;
+}
+.btn-iniciar {
+  display: inline-block;
+  padding: 12px 26px;
+  border-radius: 28px;
+  background: #f39c12;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform .15s ease, background .2s ease;
+}
+.btn-iniciar:hover {
+  background: #e67e22;
+  transform: translateY(-2px);
+}
+.contenedor {
+  max-width: 980px;
+  margin: 30px auto;
+  padding: 0 18px;
+}
+/* Ajuste suave para que el scroll no tape el contenido */
+#app {
+  scroll-margin-top: 90px;
+}
+/* 🔄 Botón para resetear datos */
+.btn-reset {
+  margin: 22px auto 10px;
+  display: block;
+  padding: 10px 18px;
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 3px 8px rgba(0,0,0,.12);
+}
+.btn-reset:hover { background: #a71d2a; }
+/* 🔄 Botón para resetear datos */
+.btn-reset{
+  margin:22px auto 10px;
+  display:block;
+  padding:10px 18px;
+  background:#dc3545;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+  box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+.btn-reset:hover{ background:#a71d2a; }
+
+/* Autor en banner y footer */
+.autor-banner{
+  font-size:.9rem;
+  color:#fff;
+  opacity:.9;
+  margin-top:8px;
+}
+.footer{
+  text-align:center;
+  padding:18px;
+  margin-top:40px;
+  font-size:.9em;
+  background:#2c3e50;
+  color:#fff;
+  border-radius:12px 12px 0 0;
+}
+.footer strong{ color:#f39c12; }
+
+/* 🔴 Estado vencido opcional para fases completas */
+.vencido{
+  background:#fde2e2 !important;
+  border:1px solid #f5b5b5 !important;
+}
+/* 🧑‍🎓 Datos del estudiante */
+.student-info { margin: 16px 0 8px; }
+.student-info h3 { margin: 0 0 10px; color: #2c3e50; }
+.student-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+.student-grid input {
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-top: 6px;
+}
+
+/* 🔧 Acciones (export/import/pdf) */
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 18px; }
+.btn-sec {
+  background: #6c757d;
+  color: #fff; border: 0; border-radius: 8px;
+  padding: 9px 14px; cursor: pointer; font-weight: 700;
+}
+.btn-sec:hover { background: #565e64; }
+.fake-file { cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+
+/* 🖨️ Estilo imprimible */
+@media print {
+  .banner, .btn-reset, .actions, .fake-file, .btn-iniciar { display: none !important; }
+  body { background: #fff; }
+  .container { box-shadow: none; border: 0; }
+}
+/* Barra de progreso general */
+.overall-progress { margin: 8px 0 14px; }
+.progress-top { display:flex; justify-content:space-between; font-size:.9rem; color:#2c3e50; margin-bottom:6px; }
+.progress-track { height:10px; width:100%; background:#e9ecef; border-radius:8px; overflow:hidden; }
+.progress-bar { height:100%; width:0%; transition:width .3s ease; background:#0d6efd; border-radius:8px; }
