@@ -214,3 +214,7 @@ h1 { color: #2c3e50; }
 .progress-top { display:flex; justify-content:space-between; font-size:.9rem; color:#2c3e50; margin-bottom:6px; }
 .progress-track { height:10px; width:100%; background:#e9ecef; border-radius:8px; overflow:hidden; }
 .progress-bar { height:100%; width:0%; transition:width .3s ease; background:#0d6efd; border-radius:8px; }
+/* NUEVO: Estilo para el campo del título */
+.student-grid .full-width {
+    grid-column: 1 / -1; /* Ocupa todas las columnas de la grilla */
+}
