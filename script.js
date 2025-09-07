@@ -350,13 +350,13 @@ if (_resetBtn) {
   _resetBtn.addEventListener('click', () => {
     if (!confirm('Esto borrará el avance guardado en este navegador. ¿Continuar?')) return;
     try {
-      // Borra solo las claves de la app (ajusta si usas otras)
       localStorage.removeItem('thesisProgress');
       localStorage.removeItem('thesisStudent');
     } catch (e) { /* no-op */ }
-    // Recargar es lo más robusto: vuelve todo a estado limpio
     location.reload();
   });
 }
+
+
 
 
