@@ -1,127 +1,137 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
-  /* ===== Constantes ===== */
-  const STORAGE_KEY = 'thesisProgress';
-  const STUDENT_KEY = 'thesisStudent';
+  /* ====== Claves de storage ====== */
+  var STORAGE_KEY = 'thesisProgress';
+  var STUDENT_KEY = 'thesisStudent';
 
-  /* ===== Dataset por defecto (6 fases) ===== */
-  const defaultThesisData = {
+  /* ====== Data por defecto (6 fases) ====== */
+  var defaultThesisData = {
     stages: [
       {
-        title: "Fase 1: Elección y Delimitación del Tema",
+        title: 'Fase 1: Elección y Delimitación del Tema',
         deadline: null,
         tasks: [
-          { description: "Realizar lluvia de ideas sobre posibles temas.", completed: false },
-          { description: "Investigar antecedentes de los temas seleccionados.", completed: false },
-          { description: "Definir el tema final y delimitar su alcance.", completed: false }
+          { description: 'Realizar lluvia de ideas sobre posibles temas.', completed: false },
+          { description: 'Investigar antecedentes de los temas seleccionados.', completed: false },
+          { description: 'Definir el tema final y delimitar su alcance.', completed: false }
         ]
       },
       {
-        title: "Fase 2: Planteamiento del Problema",
+        title: 'Fase 2: Planteamiento del Problema',
         deadline: null,
         tasks: [
-          { description: "Redactar la descripción del problema.", completed: false },
-          { description: "Formular la pregunta de investigación principal.", completed: false },
-          { description: "Formular preguntas de investigación secundarias.", completed: false },
-          { description: "Escribir la justificación e importancia del estudio.", completed: false }
+          { description: 'Redactar la descripción del problema.', completed: false },
+          { description: 'Formular la pregunta de investigación principal.', completed: false },
+          { description: 'Formular preguntas de investigación secundarias.', completed: false },
+          { description: 'Escribir la justificación e importancia del estudio.', completed: false }
         ]
       },
       {
-        title: "Fase 3: Construcción del Marco Teórico",
+        title: 'Fase 3: Construcción del Marco Teórico',
         deadline: null,
         tasks: [
-          { description: "Identificar las bases teóricas clave.", completed: false },
-          { description: "Buscar y recopilar literatura relevante (artículos, libros).", completed: false },
-          { description: "Redactar los antecedentes de la investigación.", completed: false },
-          { description: "Desarrollar los conceptos y teorías centrales.", completed: false }
+          { description: 'Identificar las bases teóricas clave.', completed: false },
+          { description: 'Buscar y recopilar literatura relevante (artículos, libros).', completed: false },
+          { description: 'Redactar los antecedentes de la investigación.', completed: false },
+          { description: 'Desarrollar los conceptos y teorías centrales.', completed: false }
         ]
       },
       {
-        title: "Fase 4: Diseño Metodológico",
+        title: 'Fase 4: Diseño Metodológico',
         deadline: null,
         tasks: [
-          { description: "Definir el enfoque de la investigación (cualitativo, cuantitativo, mixto).", completed: false },
-          { description: "Seleccionar y describir la población y muestra.", completed: false },
-          { description: "Diseñar los instrumentos de recolección de datos.", completed: false },
-          { description: "Describir el procedimiento para el análisis de datos.", completed: false }
+          { description: 'Definir el enfoque de la investigación (cualitativo, cuantitativo, mixto).', completed: false },
+          { description: 'Seleccionar y describir la población y muestra.', completed: false },
+          { description: 'Diseñar los instrumentos de recolección de datos.', completed: false },
+          { description: 'Describir el procedimiento para el análisis de datos.', completed: false }
         ]
       },
       {
-        title: "Fase 5: Resultados y Discusión",
+        title: 'Fase 5: Resultados y Discusión',
         deadline: null,
         tasks: [
-          { description: "Preparar y depurar los datos / transcripciones.", completed: false },
-          { description: "Realizar el análisis (estadístico o temático).", completed: false },
-          { description: "Generar tablas, figuras y visualizaciones clave.", completed: false },
-          { description: "Redactar resultados y discutirlos con el marco teórico.", completed: false }
+          { description: 'Preparar y depurar los datos / transcripciones.', completed: false },
+          { description: 'Realizar el análisis (estadístico o temático).', completed: false },
+          { description: 'Generar tablas, figuras y visualizaciones clave.', completed: false },
+          { description: 'Redactar resultados y discutirlos con el marco teórico.', completed: false }
         ]
       },
       {
-        title: "Fase 6: Conclusiones y Recomendaciones",
+        title: 'Fase 6: Conclusiones y Recomendaciones',
         deadline: null,
         tasks: [
-          { description: "Sintetizar hallazgos y responder a la pregunta de investigación.", completed: false },
-          { description: "Redactar conclusiones alineadas con los objetivos.", completed: false },
-          { description: "Formular recomendaciones aplicables (defensa y seguridad).", completed: false },
-          { description: "Presentación y resumen ejecutivo de cierre.", completed: false }
+          { description: 'Sintetizar hallazgos y responder a la pregunta de investigación.', completed: false },
+          { description: 'Redactar conclusiones alineadas con los objetivos.', completed: false },
+          { description: 'Formular recomendaciones aplicables (defensa y seguridad).', completed: false },
+          { description: 'Presentación y resumen ejecutivo de cierre.', completed: false }
         ]
       }
     ]
   };
 
-  /* ===== Carga/guardado ===== */
-  const deepClone = (x) => JSON.parse(JSON.stringify(x));
-  const loadData = () => {
+  /* ====== Utilidades ====== */
+  function clone(x) { return JSON.parse(JSON.stringify(x)); }
+  function loadData() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : deepClone(defaultThesisData);
-    } catch { return deepClone(defaultThesisData); }
-  };
-  let thesisData = loadData();
-  const saveData = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(thesisData));
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : clone(defaultThesisData);
+    } catch (e) {
+      return clone(defaultThesisData);
+    }
+  }
+  function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(thesisData)); }
 
-  /* ===== Migración: asegura que existan Fase 5 y 6 si el usuario tenía datos viejos ===== */
-  (function ensureNewStages() {
-    const have = t => thesisData.stages?.some(s => s.title === t);
-    if (!have("Fase 5: Resultados y Discusión")) thesisData.stages.push(deepClone(defaultThesisData.stages[4]));
-    if (!have("Fase 6: Conclusiones y Recomendaciones")) thesisData.stages.push(deepClone(defaultThesisData.stages[5]));
+  var thesisData = loadData();
+
+  /* ====== Migración: garantiza Fase 5 y 6 si el usuario tenía datos viejos ====== */
+  (function ensureStages() {
+    function have(t) {
+      return (thesisData.stages || []).some(function (s) { return s.title === t; });
+    }
+    if (!have('Fase 5: Resultados y Discusión')) {
+      thesisData.stages.push(clone(defaultThesisData.stages[4]));
+    }
+    if (!have('Fase 6: Conclusiones y Recomendaciones')) {
+      thesisData.stages.push(clone(defaultThesisData.stages[5]));
+    }
     saveData();
   })();
 
-  /* ===== Cache de nodos ===== */
-  const roadmapContainer = document.getElementById('thesis-roadmap');
-  const ganttChartContainer = document.getElementById('gantt-chart');
+  /* ====== Cache de nodos ====== */
+  var roadmapContainer = document.getElementById('thesis-roadmap');
+  var ganttChartContainer = document.getElementById('gantt-chart');
+  var progressBar = document.getElementById('progress-bar');
+  var progressText = document.getElementById('progress-text');
 
-  /* ===== Progreso general ===== */
+  /* ====== Progreso general ====== */
   function updateOverallProgress() {
-    let total = 0, done = 0;
-    (thesisData.stages || []).forEach(s => (s.tasks || []).forEach(t => {
-      total++; if (t.completed) done++;
-    }));
-    const pct = total ? Math.round((done / total) * 100) : 0;
-    const bar  = document.getElementById('progress-bar');
-    const text = document.getElementById('progress-text');
-    if (bar) {
-      bar.style.width = pct + '%';
-      bar.style.background = (pct >= 80) ? '#28a745' : (pct >= 40 ? '#ffc107' : '#dc3545');
+    var total = 0, done = 0;
+    (thesisData.stages || []).forEach(function (s) {
+      (s.tasks || []).forEach(function (t) { total += 1; if (t.completed) done += 1; });
+    });
+    var pct = total ? Math.round((done / total) * 100) : 0;
+    if (progressBar) {
+      progressBar.style.width = pct + '%';
+      progressBar.style.background = (pct >= 80) ? '#28a745' : (pct >= 40 ? '#ffc107' : '#dc3545');
     }
-    if (text) text.textContent = `Progreso general: ${pct}%`;
+    if (progressText) progressText.textContent = 'Progreso general: ' + pct + '%';
   }
 
-  /* ===== CRUD de tareas ===== */
+  /* ====== Acciones de tareas ====== */
   function toggleTask(si, ti) {
-    thesisData.stages[si].tasks[ti].completed = !thesisData.stages[si].tasks[ti].completed;
+    var t = thesisData.stages[si].tasks[ti];
+    t.completed = !t.completed;
     saveData(); renderAll();
   }
   function addTask(si, txt) {
-    const d = (txt || '').trim(); if (!d) return;
+    var d = (txt || '').trim(); if (!d) return;
     thesisData.stages[si].tasks.push({ description: d, completed: false });
     saveData(); renderAll();
   }
   function editTask(si, ti) {
-    const cur = thesisData.stages[si].tasks[ti].description;
-    const n = prompt('Edita tu tarea:', cur);
+    var cur = thesisData.stages[si].tasks[ti].description;
+    var n = prompt('Edita tu tarea:', cur);
     if (n && n.trim()) {
       thesisData.stages[si].tasks[ti].description = n.trim();
       saveData(); renderAll();
@@ -133,102 +143,99 @@ document.addEventListener('DOMContentLoaded', () => {
     saveData(); renderAll();
   }
 
-  /* ===== Render del roadmap ===== */
+  /* ====== Render del roadmap ====== */
   function renderRoadmap() {
     if (!roadmapContainer) return;
     roadmapContainer.innerHTML = '';
-    let prevCompleted = true;
-    const today = new Date(); today.setHours(0,0,0,0);
 
-    (thesisData.stages || []).forEach((stage, si) => {
-      const isCompleted = stage.tasks?.length > 0 && stage.tasks.every(t => t.completed);
-      const isLocked    = !prevCompleted;
-      const isActive    = !isLocked && !isCompleted;
-      const isOverdue   = isActive && stage.deadline && new Date(stage.deadline) < today;
+    var prevCompleted = true;
+    var today = new Date(); today.setHours(0,0,0,0);
 
-      const stageEl = document.createElement('div');
+    (thesisData.stages || []).forEach(function (stage, si) {
+      var isCompleted = (stage.tasks && stage.tasks.length > 0) &&
+                        stage.tasks.every(function (t) { return t.completed; });
+      var isLocked  = !prevCompleted;
+      var isActive  = !isLocked && !isCompleted;
+      var isOverdue = isActive && stage.deadline && (new Date(stage.deadline) < today);
+
+      var stageEl = document.createElement('div');
       stageEl.className = 'stage';
-      if (isLocked)     stageEl.classList.add('locked');
-      if (isCompleted)  stageEl.classList.add('completed');
-      if (isOverdue)    stageEl.classList.add('overdue');
-      if (!isActive)    stageEl.classList.add('collapsed');
+      if (isLocked)    stageEl.classList.add('locked');
+      if (isCompleted) stageEl.classList.add('completed');
+      if (isOverdue)   stageEl.classList.add('overdue');
+      if (!isActive)   stageEl.classList.add('collapsed');
 
-      const header = document.createElement('div');
+      // Header
+      var header = document.createElement('div');
       header.className = 'stage-header';
-      const deadlineText = stage.deadline
-        ? (isOverdue ? `¡Atrasado! Límite: ${stage.deadline}` : `Fecha Límite: ${stage.deadline}`)
+
+      var titleBox = document.createElement('div');
+      titleBox.className = 'stage-title-container';
+      var h2 = document.createElement('h2'); h2.textContent = stage.title;
+      var dl = document.createElement('span'); dl.className = 'deadline-text';
+      dl.textContent = stage.deadline
+        ? (isOverdue ? '¡Atrasado! Límite: ' + stage.deadline : 'Fecha Límite: ' + stage.deadline)
         : 'Sin fecha límite';
-      const status = isCompleted ? 'Completada' : (isActive ? 'Activa' : 'Bloqueada');
-      header.innerHTML =
-        `<div class="stage-title-container">
-           <h2>${stage.title}</h2>
-           <span class="deadline-text">${deadlineText}</span>
-         </div>
-         <span class="status-badge ${status.toLowerCase()}">${status}</span>`;
-      header.addEventListener('click', () => { if (!isLocked) stageEl.classList.toggle('collapsed'); });
+      titleBox.appendChild(h2); titleBox.appendChild(dl);
+
+      var status = isCompleted ? 'Completada' : (isActive ? 'Activa' : 'Bloqueada');
+      var badge = document.createElement('span');
+      badge.className = 'status-badge ' + status.toLowerCase();
+      badge.textContent = status;
+
+      header.appendChild(titleBox);
+      header.appendChild(badge);
+      header.addEventListener('click', function () { if (!isLocked) stageEl.classList.toggle('collapsed'); });
       stageEl.appendChild(header);
 
-      const content = document.createElement('div');
+      // Contenido
+      var content = document.createElement('div');
       content.className = 'stage-tasks';
 
       if (isActive || isCompleted) {
-        const deadlineDiv = document.createElement('div');
-        deadlineDiv.className = 'deadline-management';
-        deadlineDiv.innerHTML = `<label for="deadline-${si}">Establecer Fecha Límite:</label>`;
-        const dateInput = document.createElement('input');
-        dateInput.type  = 'date';
-        dateInput.id    = `deadline-${si}`;
-        dateInput.value = stage.deadline || '';
-        dateInput.addEventListener('change', (e) => {
+        var dDiv = document.createElement('div');
+        dDiv.className = 'deadline-management';
+        var lbl = document.createElement('label');
+        lbl.setAttribute('for', 'deadline-' + si);
+        lbl.textContent = 'Establecer Fecha Límite:';
+        var inp = document.createElement('input');
+        inp.type = 'date'; inp.id = 'deadline-' + si; inp.value = stage.deadline || '';
+        inp.addEventListener('change', function (e) {
           thesisData.stages[si].deadline = e.target.value;
           saveData(); renderAll();
         });
-        deadlineDiv.appendChild(dateInput);
-        content.appendChild(deadlineDiv);
+        dDiv.appendChild(lbl); dDiv.appendChild(inp);
+        content.appendChild(dDiv);
       }
 
-      (stage.tasks || []).forEach((task, ti) => {
-        const row = document.createElement('div');
-        row.className = 'task';
-        const cb = document.createElement('input');
-        cb.type = 'checkbox';
-        cb.checked  = !!task.completed;
-        cb.disabled = isLocked;
-        cb.addEventListener('change', () => toggleTask(si, ti));
-        const label = document.createElement('label');
-        label.textContent = task.description;
-        row.appendChild(cb); row.appendChild(label);
+      (stage.tasks || []).forEach(function (task, ti) {
+        var row = document.createElement('div'); row.className = 'task';
+        var cb = document.createElement('input'); cb.type = 'checkbox';
+        cb.checked = !!task.completed; cb.disabled = isLocked;
+        cb.addEventListener('change', function () { toggleTask(si, ti); });
+        var lab = document.createElement('label'); lab.textContent = task.description;
+        row.appendChild(cb); row.appendChild(lab);
 
         if (!isLocked) {
-          const actions = document.createElement('div');
-          actions.className = 'task-actions';
-          const editBtn = document.createElement('button');
-          editBtn.className = 'task-action-btn';
-          editBtn.title = 'Editar tarea';
-          editBtn.textContent = '✏️';
-          editBtn.addEventListener('click', () => editTask(si, ti));
-          const delBtn = document.createElement('button');
-          delBtn.className = 'task-action-btn';
-          delBtn.title = 'Eliminar tarea';
-          delBtn.textContent = '🗑️';
-          delBtn.addEventListener('click', () => deleteTask(si, ti));
-          actions.appendChild(editBtn); actions.appendChild(delBtn);
+          var actions = document.createElement('div'); actions.className = 'task-actions';
+          var editB = document.createElement('button'); editB.className = 'task-action-btn'; editB.title = 'Editar tarea'; editB.textContent = '✏️';
+          editB.addEventListener('click', function () { editTask(si, ti); });
+          var delB = document.createElement('button'); delB.className = 'task-action-btn'; delB.title = 'Eliminar tarea'; delB.textContent = '🗑️';
+          delB.addEventListener('click', function () { deleteTask(si, ti); });
+          actions.appendChild(editB); actions.appendChild(delB);
           row.appendChild(actions);
         }
         content.appendChild(row);
       });
 
       if (!isLocked) {
-        const addDiv = document.createElement('div');
-        addDiv.className = 'add-task-form';
-        const inp = document.createElement('input');
-        inp.type = 'text'; inp.placeholder = 'Añadir nueva tarea...';
-        const btn = document.createElement('button');
-        btn.type = 'button'; btn.textContent = 'Añadir';
-        const doAdd = () => { addTask(si, inp.value); inp.value = ''; inp.focus(); };
-        btn.addEventListener('click', doAdd);
-        inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doAdd(); } });
-        addDiv.appendChild(inp); addDiv.appendChild(btn);
+        var addDiv = document.createElement('div'); addDiv.className = 'add-task-form';
+        var ninp = document.createElement('input'); ninp.type = 'text'; ninp.placeholder = 'Añadir nueva tarea...';
+        var nbtn = document.createElement('button'); nbtn.type = 'button'; nbtn.textContent = 'Añadir';
+        function doAdd() { addTask(si, ninp.value); ninp.value=''; ninp.focus(); }
+        nbtn.addEventListener('click', doAdd);
+        ninp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); doAdd(); } });
+        addDiv.appendChild(ninp); addDiv.appendChild(nbtn);
         content.appendChild(addDiv);
       }
 
@@ -238,41 +245,46 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ===== Gantt ===== */
+  /* ====== Gantt ====== */
   function renderGanttChart() {
     if (!ganttChartContainer) return;
     ganttChartContainer.innerHTML = '';
-    const withDates = (thesisData.stages || []).filter(s => s.deadline);
+
+    var withDates = (thesisData.stages || []).filter(function (s) { return !!s.deadline; });
     if (withDates.length === 0) {
-      ganttChartContainer.innerHTML =
-        '<p style="grid-column:1/-1;text-align:center;">Establece fechas límite para ver el cronograma.</p>';
+      var p = document.createElement('p');
+      p.style.gridColumn = '1 / -1';
+      p.style.textAlign = 'center';
+      p.textContent = 'Establece fechas límite para ver el cronograma.';
+      ganttChartContainer.appendChild(p);
       return;
     }
-    const day = 86400000;
-    let projectStart = new Date(); projectStart.setHours(0,0,0,0);
-    const projectEnd = new Date(Math.max(...withDates.map(s => new Date(s.deadline))));
-    const totalDays = Math.max(1, Math.ceil((projectEnd - projectStart) / day) + 1);
-    let last = projectStart;
 
-    (thesisData.stages || []).forEach(stage => {
+    var day = 86400000;
+    var projectStart = new Date(); projectStart.setHours(0,0,0,0);
+    var projectEnd = new Date(Math.max.apply(null, withDates.map(function (s) { return new Date(s.deadline); })));
+    var totalDays = Math.max(1, Math.ceil((projectEnd - projectStart) / day) + 1);
+    var last = projectStart;
+
+    (thesisData.stages || []).forEach(function (stage) {
       if (!stage.deadline) return;
-      const start = new Date(last);
-      const end   = new Date(stage.deadline);
-      const startOffset = Math.max(0, Math.ceil((start - projectStart) / day));
-      const duration    = Math.max(1, Math.ceil((end - start) / day));
-      const label = document.createElement('div');
-      label.className = 'gantt-label';
-      label.textContent = (stage.title.split(':')[1] || stage.title).trim();
-      const row = document.createElement('div');
-      row.className = 'gantt-row';
-      const bar = document.createElement('div');
-      bar.className = 'gantt-bar';
-      bar.style.left  = (startOffset / totalDays * 100) + '%';
-      bar.style.width = (duration    / totalDays * 100) + '%';
-      const isCompleted = stage.tasks?.every(t => t.completed);
-      const isOverdue   = !isCompleted && new Date(stage.deadline) < new Date();
+      var start = new Date(last);
+      var end = new Date(stage.deadline);
+      var startOffset = Math.max(0, Math.ceil((start - projectStart) / day));
+      var duration = Math.max(1, Math.ceil((end - start) / day));
+
+      var label = document.createElement('div'); label.className = 'gantt-label';
+      var titleParts = stage.title.split(':'); label.textContent = (titleParts[1] ? titleParts[1] : stage.title).trim();
+      var row = document.createElement('div'); row.className = 'gantt-row';
+      var bar = document.createElement('div'); bar.className = 'gantt-bar';
+      bar.style.left = (startOffset / totalDays * 100) + '%';
+      bar.style.width = (duration / totalDays * 100) + '%';
+
+      var isCompleted = (stage.tasks || []).every(function (t) { return t.completed; });
+      var isOverdue = !isCompleted && (new Date(stage.deadline) < new Date());
       if (isCompleted) bar.classList.add('completed');
       if (isOverdue)   bar.classList.add('overdue');
+
       row.appendChild(bar);
       ganttChartContainer.appendChild(label);
       ganttChartContainer.appendChild(row);
@@ -280,17 +292,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ===== Orquesta ===== */
+  /* ====== Orquesta ====== */
   function renderAll() { renderRoadmap(); renderGanttChart(); updateOverallProgress(); }
   renderAll();
 
-  /* ===== Botones opcionales (no fallan si no existen) ===== */
-  const resetBtn  = document.getElementById('reset-btn');
-  const exportBtn = document.getElementById('export-json');
-  const importBtn = document.getElementById('import-json');
+  /* ====== Exportar/Importar/Reset (opcionales) ====== */
+  var resetBtn  = document.getElementById('reset-btn');
+  var exportBtn = document.getElementById('export-json');
+  var importBtn = document.getElementById('import-json');
 
   if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
+    resetBtn.addEventListener('click', function () {
       if (confirm('¿Borrar datos locales y reiniciar?')) {
         localStorage.removeItem(STORAGE_KEY);
         location.reload();
@@ -299,14 +311,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (exportBtn) {
-    exportBtn.addEventListener('click', () => {
-      const payload = {
+    exportBtn.addEventListener('click', function () {
+      var payload = {
         meta: { app: 'Asesor-Tesis', exportedAt: new Date().toISOString() },
         student: JSON.parse(localStorage.getItem(STUDENT_KEY) || '{}'),
         data: thesisData
       };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
+      var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      var a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = 'avance.json';
       a.click();
@@ -315,15 +327,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (importBtn) {
-    importBtn.addEventListener('click', () => {
-      const inp = document.createElement('input');
+    importBtn.addEventListener('click', function () {
+      var inp = document.createElement('input');
       inp.type = 'file'; inp.accept = 'application/json';
-      inp.onchange = async e => {
-        const file = e.target.files[0]; if (!file) return;
-        const txt  = await file.text();
-        const obj  = JSON.parse(txt);
-        if (obj.data?.stages) { thesisData = obj.data; saveData(); renderAll(); }
-        if (obj.student) localStorage.setItem(STUDENT_KEY, JSON.stringify(obj.student));
+      inp.onchange = function (e) {
+        var file = e.target.files[0]; if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function () {
+          var obj = JSON.parse(reader.result);
+          if (obj && obj.data && obj.data.stages) { thesisData = obj.data; saveData(); renderAll(); }
+          if (obj && obj.student) localStorage.setItem(STUDENT_KEY, JSON.stringify(obj.student));
+        };
+        reader.readAsText(file);
       };
       inp.click();
     });
