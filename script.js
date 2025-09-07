@@ -2,53 +2,108 @@ document.addEventListener('DOMContentLoaded', () => {
   // ====== CONSTANTES ======
   const STORAGE_KEY = 'thesisProgress';
 
-  // Datos por defecto (puedes añadir fases 5 y 6 luego si deseas)
-  const defaultThesisData = {
-    stages: [
-      {
-        title: "Fase 1: Elección y Delimitación del Tema",
-        deadline: null,
-        tasks: [
-          { description: "Realizar lluvia de ideas sobre posibles temas.", completed: false },
-          { description: "Investigar antecedentes de los temas seleccionados.", completed: false },
-          { description: "Definir el tema final y delimitar su alcance.", completed: false }
-        ]
-      },
-      {
-        title: "Fase 2: Planteamiento del Problema",
-        deadline: null,
-        tasks: [
-          { description: "Redactar la descripción del problema.", completed: false },
-          { description: "Formular la pregunta de investigación principal.", completed: false },
-          { description: "Formular preguntas de investigación secundarias.", completed: false },
-          { description: "Escribir la justificación e importancia del estudio.", completed: false }
-        ]
-      },
-      {
-        title: "Fase 3: Construcción del Marco Teórico",
-        deadline: null,
-        tasks: [
-          { description: "Identificar las bases teóricas clave.", completed: false },
-          { description: "Buscar y recopilar literatura relevante (artículos, libros).", completed: false },
-          { description: "Redactar los antecedentes de la investigación.", completed: false },
-          { description: "Desarrollar los conceptos y teorías centrales.", completed: false }
-        ]
-      },
-      {
-        title: "Fase 4: Diseño Metodológico",
-        deadline: null,
-        tasks: [
-          { description: "Definir el enfoque de la investigación (cualitativo, cuantitativo, mixto).", completed: false },
-          { description: "Seleccionar y describir la población y muestra.", completed: false },
-          { description: "Diseñar los instrumentos de recolección de datos.", completed: false },
-          { description: "Describir el procedimiento para el análisis de datos.", completed: false }
-        ]
-      }
-    ]
-  };
+  //const defaultThesisData = {
+  stages: [
+    {
+      title: "Fase 1: Elección y Delimitación del Tema",
+      deadline: null,
+      tasks: [
+        { description: "Realizar lluvia de ideas sobre posibles temas.", completed: false },
+        { description: "Investigar antecedentes de los temas seleccionados.", completed: false },
+        { description: "Definir el tema final y delimitar su alcance.", completed: false }
+      ]
+    },
+    {
+      title: "Fase 2: Planteamiento del Problema",
+      deadline: null,
+      tasks: [
+        { description: "Redactar la descripción del problema.", completed: false },
+        { description: "Formular la pregunta de investigación principal.", completed: false },
+        { description: "Formular preguntas de investigación secundarias.", completed: false },
+        { description: "Escribir la justificación e importancia del estudio.", completed: false }
+      ]
+    },
+    {
+      title: "Fase 3: Construcción del Marco Teórico",
+      deadline: null,
+      tasks: [
+        { description: "Identificar las bases teóricas clave.", completed: false },
+        { description: "Buscar y recopilar literatura relevante (artículos, libros).", completed: false },
+        { description: "Redactar los antecedentes de la investigación.", completed: false },
+        { description: "Desarrollar los conceptos y teorías centrales.", completed: false }
+      ]
+    },
+    {
+      title: "Fase 4: Diseño Metodológico",
+      deadline: null,
+      tasks: [
+        { description: "Definir el enfoque de la investigación (cualitativo, cuantitativo, mixto).", completed: false },
+        { description: "Seleccionar y describir la población y muestra.", completed: false },
+        { description: "Diseñar los instrumentos de recolección de datos.", completed: false },
+        { description: "Describir el procedimiento para el análisis de datos.", completed: false }
+      ]
+    },
+    {
+      title: "Fase 5: Resultados y Discusión",
+      deadline: null,
+      tasks: [
+        { description: "Preparar y depurar los datos / transcripciones.", completed: false },
+        { description: "Realizar el análisis (estadístico o temático).", completed: false },
+        { description: "Generar tablas, figuras y visualizaciones clave.", completed: false },
+        { description: "Redactar resultados y discutirlos con el marco teórico.", completed: false }
+      ]
+    },
+    {
+      title: "Fase 6: Conclusiones y Recomendaciones",
+      deadline: null,
+      tasks: [
+        { description: "Sintetizar hallazgos y responder a la pregunta de investigación.", completed: false },
+        { description: "Redactar conclusiones alineadas con los objetivos.", completed: false },
+        { description: "Formular recomendaciones aplicables (defensa y seguridad).", completed: false },
+        { description: "Presentación y resumen ejecutivo de cierre.", completed: false }
+      ]
+    }
+  ]
+};
+
 
   // ====== STORAGE ======
   const loadThesisData  = () => {
+    // ➕ Asegurar que existan Fase 5 y Fase 6 en datos guardados previamente
+(function ensureNewStages() {
+  const have = (t) => thesisData.stages?.some(s => s.title === t);
+
+  if (!have("Fase 5: Resultados y Discusión")) {
+    thesisData.stages.push({
+      title: "Fase 5: Resultados y Discusión",
+      deadline: null,
+      tasks: [
+        { description: "Preparar y depurar los datos / transcripciones.", completed: false },
+        { description: "Realizar el análisis (estadístico o temático).", completed: false },
+        { description: "Generar tablas, figuras y visualizaciones clave.", completed: false },
+        { description: "Redactar resultados y discutirlos con el marco teórico.", completed: false }
+      ]
+    });
+  }
+
+  if (!have("Fase 6: Conclusiones y Recomendaciones")) {
+    thesisData.stages.push({
+      title: "Fase 6: Conclusiones y Recomendaciones",
+      deadline: null,
+      tasks: [
+        { description: "Sintetizar hallazgos y responder a la pregunta de investigación.", completed: false },
+        { description: "Redactar conclusiones alineadas con los objetivos.", completed: false },
+        { description: "Formular recomendaciones aplicables (defensa y seguridad).", completed: false },
+        { description: "Presentación y resumen ejecutivo de cierre.", completed: false }
+      ]
+    });
+  }
+
+  // Guarda el dataset migrado
+  if (typeof saveThesisData === 'function') saveThesisData();
+  else localStorage.setItem(STORAGE_KEY, JSON.stringify(thesisData));
+})();
+
     const saved = localStorage.getItem(STORAGE_KEY);
     return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(defaultThesisData));
   };
@@ -310,3 +365,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // Primera pinta
   renderAll();
 });
+
