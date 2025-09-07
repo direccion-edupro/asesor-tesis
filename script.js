@@ -344,18 +344,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
-// Conectar botón Reset (micro-parche seguro)
-const _resetBtn = document.getElementById('btn-reset');
-if (_resetBtn) {
-  _resetBtn.addEventListener('click', () => {
-    if (!confirm('Esto borrará el avance guardado en este navegador. ¿Continuar?')) return;
-    try {
-      localStorage.removeItem('thesisProgress');
-      localStorage.removeItem('thesisStudent');
-    } catch (e) { /* no-op */ }
-    location.reload();
-  });
-}
 
 
 
