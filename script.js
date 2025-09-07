@@ -7,7 +7,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ====== Data por defecto (6 fases) ====== */
   var defaultThesisData = {
-    stages: [
+  // NUEVO OBJETO AÑADIDO AQUÍ
+  projectInfo: {
+    title: '',
+    studentName: '',
+    studentId: '',
+    studentGroup: ''
+  },
+  stages: [
       {
         title: 'Fase 1: Elección y Delimitación del Tema',
         deadline: null,
@@ -103,7 +110,39 @@ document.addEventListener('DOMContentLoaded', function () {
   var ganttChartContainer = document.getElementById('gantt-chart');
   var progressBar = document.getElementById('progress-bar');
   var progressText = document.getElementById('progress-text');
+  
+  // --- NUEVO: Lógica para la información del proyecto ---
+var projectTitleInput = document.getElementById('project-title');
+var studentNameInput = document.getElementById('student-name');
+var studentIdInput = document.getElementById('student-id');
+var studentGroupInput = document.getElementById('student-group');
 
+function renderProjectInfo() {
+    if(projectTitleInput) projectTitleInput.value = thesisData.projectInfo.title || '';
+    if(studentNameInput) studentNameInput.value = thesisData.projectInfo.studentName || '';
+    if(studentIdInput) studentIdInput.value = thesisData.projectInfo.studentId || '';
+    if(studentGroupInput) studentGroupInput.value = thesisData.projectInfo.studentGroup || '';
+}
+
+function setupInfoListeners() {
+    function handleInput(event) {
+        var keyMap = {
+            'project-title': 'title',
+            'student-name': 'studentName',
+            'student-id': 'studentId',
+            'student-group': 'studentGroup'
+        };
+        var key = keyMap[event.target.id];
+        if (key) {
+            thesisData.projectInfo[key] = event.target.value;
+            saveData();
+        }
+    }
+    if(projectTitleInput) projectTitleInput.addEventListener('input', handleInput);
+    if(studentNameInput) studentNameInput.addEventListener('input', handleInput);
+    if(studentIdInput) studentIdInput.addEventListener('input', handleInput);
+    if(studentGroupInput) studentGroupInput.addEventListener('input', handleInput);
+}
   /* ====== Progreso general ====== */
   function updateOverallProgress() {
     var total = 0, done = 0;
@@ -293,8 +332,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ====== Orquesta ====== */
-  function renderAll() { renderRoadmap(); renderGanttChart(); updateOverallProgress(); }
-  renderAll();
+function renderAll() { 
+    renderRoadmap(); 
+    renderGanttChart(); 
+    updateOverallProgress(); 
+    renderProjectInfo(); 
+  
+renderAll();
+setupInfoListeners(); 
 
   /* ====== Exportar/Importar/Reset (opcionales) ====== */
   var resetBtn  = document.getElementById('reset-btn');
@@ -344,6 +389,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
 
 
 
