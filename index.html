@@ -1,66 +1,105 @@
-<!DOCTYPE html>
+</body><!DOCTYPE html>
 <html lang="es">
+  <!-- Icono opcional para evitar 404 del favicon -->
+<link rel="icon" href="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
+
+<!-- ✅ tu hoja de estilos -->
+<link rel="stylesheet" href="style.css" />
+
+<!-- ✅ tu JS (defer para que cargue cuando el DOM esté listo) -->
+<script src="script.js" defer></script>
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mi Asesor de Tesis Digital</title>
+  <link rel="stylesheet" href="style.css">
 
-  <!-- Favicon para evitar 404 -->
-  <link rel="icon" href="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
-
-  <!-- Estilos y JS -->
-  <link rel="stylesheet" href="style.css" />
-  <script src="script.js" defer></script>
 </head>
+<script src="script.js" defer></script>
+
 <body>
-  <!-- Banner -->
+  <!-- 🚀 Banner -->
   <header class="banner">
     <h1>Asesor-Tesis 🎓</h1>
     <p>Tu hoja de ruta para el éxito académico.</p>
     <a href="#app" class="btn-iniciar">Iniciar</a>
-    <p style="margin-top:10px;">Desarrollado por <strong>Johany Acevedo</strong></p>
+    <p class="autor-banner">Desarrollado por <strong>Johany Acevedo</strong></p>
   </header>
 
-  <!-- Contenido -->
-  <main id="app" class="container">
-    <h1>Mi Asesor de Tesis Digital</h1>
+  <!-- 🔽 App -->
+  <main id="app" class="contenedor">
+    <div class="container">
+      <header>
+        <h2>Mi Asesor de Tesis Digital</h2>
+        <p>Tu hoja de ruta para el éxito académico.</p>
+      </header>
 
-    <section id="gantt-chart-container">
-      <h3>Cronograma del Proyecto</h3>
+      <!-- Gantt -->
+      <section id="gantt-chart-container">
+        <h3>Cronograma del Proyecto</h3>
+        <!-- Progreso general -->
+<div id="overall-progress" class="overall-progress">
+  <div class="progress-top">
+    <span id="progress-text">Progreso general: 0%</span>
+  </div>
+  <div class="progress-track">
+    <div id="progress-bar" class="progress-bar"></div>
+  </div>
+</div>
 
-      <!-- Progreso general -->
-      <div id="overall-progress" class="overall-progress">
-        <div class="progress-top">
-          <span id="progress-text">Progreso general: 0%</span>
+        <div id="gantt-chart"></div>
+      </section>
+
+      <!-- Datos del estudiante -->
+      <section id="student-info" class="student-info">
+        <h3>Datos del Estudiante</h3>
+        <div class="student-grid">
+          <label>Nombre
+            <input type="text" id="student-name" placeholder="Nombre y Apellidos">
+          </label>
+          <label>Identificación
+            <input type="text" id="student-id" placeholder="Matrícula / Cédula">
+          </label>
+          <label>Programa/Sección
+            <input type="text" id="student-group" placeholder="Sección / Cohorte">
+          </label>
         </div>
-        <div class="progress-track">
-          <div id="progress-bar" class="progress-bar"></div>
-        </div>
-      </div>
+      </section>
 
-      <div id="gantt-chart"></div>
-    </section>
+      <!-- Acciones -->
+      <section class="actions">
+        <button id="export-json" class="btn-sec">📦 Exportar avance (.json)</button>
+        <label class="btn-sec fake-file">
+          📥 Importar avance (.json)
+          <input type="file" id="import-json" accept="application/json" hidden>
+        </label>
+        <button id="export-pdf" class="btn-sec">🖨️ Exportar a PDF</button>
+      </section>
 
-    <!-- Datos del estudiante -->
-    <section id="student-info" class="student-info">
-      <h3>Datos del Estudiante</h3>
-      <div class="student-row">
-        <input id="student-name" placeholder="Nombre y Apellidos" />
-        <input id="student-id" placeholder="Matrícula / Cédula" />
-        <input id="student-program" placeholder="Sección / Cohorte" />
-      </div>
-      <div class="student-actions">
-        <button id="export-json">🗂️ Exportar avance (.json)</button>
-        <button id="import-json">📥 Importar avance (.json)</button>
-        <button id="export-pdf">🖨️ Exportar a PDF</button>
-      </div>
-      <div style="margin-top:10px;">
-        <button id="reset-btn" class="danger">🔄 Resetear Datos</button>
-      </div>
-    </section>
+      <!-- 🔥 Aquí se pintan las Fases -->
+      <section id="thesis-roadmap"></section>
 
-    <!-- Aquí el roadmap dinámico -->
-    <main id="thesis-roadmap"></main>
+      <!-- Reset -->
+      <button id="reset-data" class="btn-reset">🔄 Resetear Datos</button>
+    </div>
   </main>
+
+  <footer class="footer">
+    © 2025 Desarrollado por <strong>Johany Acevedo</strong>. Todos los derechos reservados.
+  </footer>
+
+  <!-- Carga ÚNICA del JS -->
+  <script src="script.js"></script>
+  <script>
+    // Scroll suave
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',e=>{
+        e.preventDefault();
+        const el=document.querySelector(a.getAttribute('href'));
+        if(el) el.scrollIntoView({behavior:'smooth'});
+      });
+    });
+  </script>
 </body>
 </html>
