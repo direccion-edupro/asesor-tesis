@@ -16,7 +16,6 @@
   <link rel="stylesheet" href="style.css">
 
 </head>
-<script src="script.js" defer></script>
 
 <body>
   <!-- 🚀 Banner -->
@@ -81,9 +80,15 @@
       <section id="thesis-roadmap"></section>
 
       <!-- Reset -->
-<button id="btn-reset" type="button" class="btn btn-danger">
+      
+      <button
+  id="btn-reset"
+  type="button"
+  class="btn btn-danger"
+  onclick="localStorage.removeItem('thesisProgress'); localStorage.removeItem('thesisStudent'); location.reload();">
   🔄 Resetear Datos
 </button>
+
 
   <footer class="footer">
     © 2025 Desarrollado por <strong>Johany Acevedo</strong>. Todos los derechos reservados.
@@ -103,4 +108,5 @@
   </script>
 </body>
 </html>
+
 
