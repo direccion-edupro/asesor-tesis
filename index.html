@@ -1,112 +1,91 @@
-</body><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
-  <!-- Icono opcional para evitar 404 del favicon -->
-<link rel="icon" href="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
-
-<!-- ✅ tu hoja de estilos -->
-<link rel="stylesheet" href="style.css" />
-
-<!-- ✅ tu JS (defer para que cargue cuando el DOM esté listo) -->
-<script src="script.js" defer></script>
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi Asesor de Tesis Digital</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Asesor de Tesis Digital</title>
 
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+
+    <link rel="icon" href="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
 </head>
 
 <body>
-  <!-- 🚀 Banner -->
-  <header class="banner">
-    <h1>Asesor-Tesis 🎓</h1>
-    <p>Tu hoja de ruta para el éxito académico.</p>
-    <a href="#app" class="btn-iniciar">Iniciar</a>
-    <p class="autor-banner">Desarrollado por <strong>Johany Acevedo</strong></p>
-  </header>
-
-  <!-- 🔽 App -->
-  <main id="app" class="contenedor">
-    <div class="container">
-      <header>
-        <h2>Mi Asesor de Tesis Digital</h2>
+    <header class="banner">
+        <h1>Asesor-Tesis 🎓</h1>
         <p>Tu hoja de ruta para el éxito académico.</p>
-      </header>
+        <a href="#app" class="btn-iniciar">Iniciar</a>
+        <p class="autor-banner">Desarrollado por <strong>Johany Acevedo</strong></p>
+    </header>
 
-      <!-- Gantt -->
-      <section id="gantt-chart-container">
-        <h3>Cronograma del Proyecto</h3>
-        <!-- Progreso general -->
-<div id="overall-progress" class="overall-progress">
-  <div class="progress-top">
-    <span id="progress-text">Progreso general: 0%</span>
-  </div>
-  <div class="progress-track">
-    <div id="progress-bar" class="progress-bar"></div>
-  </div>
-</div>
+    <main id="app" class="contenedor">
+        <div class="container">
+            <header>
+                <h2>Mi Asesor de Tesis Digital</h2>
+                <p>Tu hoja de ruta para el éxito académico.</p>
+            </header>
 
-        <div id="gantt-chart"></div>
-      </section>
+            <section id="gantt-chart-container">
+                <h3>Cronograma del Proyecto</h3>
+                <div id="overall-progress" class="overall-progress">
+                    <div class="progress-top">
+                        <span id="progress-text">Progreso general: 0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div id="progress-bar" class="progress-bar"></div>
+                    </div>
+                </div>
+                <div id="gantt-chart"></div>
+            </section>
 
-      <!-- Datos del estudiante -->
-      <section id="student-info" class="student-info">
-        <h3>Datos del Estudiante</h3>
-        <div class="student-grid">
-          <label>Nombre
-            <input type="text" id="student-name" placeholder="Nombre y Apellidos">
-          </label>
-          <label>Identificación
-            <input type="text" id="student-id" placeholder="Matrícula / Cédula">
-          </label>
-          <label>Programa/Sección
-            <input type="text" id="student-group" placeholder="Sección / Cohorte">
-          </label>
+            <section id="student-info" class="student-info">
+                <h3>Datos del Estudiante</h3>
+                <div class="student-grid">
+                    <label>Nombre
+                        <input type="text" id="student-name" placeholder="Nombre y Apellidos">
+                    </label>
+                    <label>Identificación
+                        <input type="text" id="student-id" placeholder="Matrícula / Cédula">
+                    </label>
+                    <label>Programa/Sección
+                        <input type="text" id="student-group" placeholder="Sección / Cohorte">
+                    </label>
+                </div>
+            </section>
+
+            <section class="actions">
+                <button id="export-json" class="btn-sec">📦 Exportar avance (.json)</button>
+                <label class="btn-sec fake-file">
+                    📥 Importar avance (.json)
+                    <input type="file" id="import-json" accept="application/json" hidden>
+                </label>
+                <button id="export-pdf" class="btn-sec">🖨️ Exportar a PDF</button>
+            </section>
+
+            <section id="thesis-roadmap"></section>
+
+            <button id="reset-btn" type="button" class="btn btn-danger">
+                🔄 Resetear Datos
+            </button>
+
+            <footer class="footer">
+                © 2025 Desarrollado por <strong>Johany Acevedo</strong>. Todos los derechos reservados.
+            </footer>
         </div>
-      </section>
+    </main>
 
-      <!-- Acciones -->
-      <section class="actions">
-        <button id="export-json" class="btn-sec">📦 Exportar avance (.json)</button>
-        <label class="btn-sec fake-file">
-          📥 Importar avance (.json)
-          <input type="file" id="import-json" accept="application/json" hidden>
-        </label>
-        <button id="export-pdf" class="btn-sec">🖨️ Exportar a PDF</button>
-      </section>
-
-      <!-- 🔥 Aquí se pintan las Fases -->
-      <section id="thesis-roadmap"></section>
-
-      <!-- Reset -->
-      
-      <button
-  id="btn-reset"
-  type="button"
-  class="btn btn-danger"
-  onclick="localStorage.removeItem('thesisProgress'); localStorage.removeItem('thesisStudent'); location.reload();">
-  🔄 Resetear Datos
-</button>
-
-
-  <footer class="footer">
-    © 2025 Desarrollado por <strong>Johany Acevedo</strong>. Todos los derechos reservados.
-  </footer>
-
-  <!-- Carga ÚNICA del JS -->
-  <script src="script.js"></script>
-  <script>
-    // Scroll suave
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click',e=>{
-        e.preventDefault();
-        const el=document.querySelector(a.getAttribute('href'));
-        if(el) el.scrollIntoView({behavior:'smooth'});
-      });
-    });
-  </script>
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const el = document.querySelector(a.getAttribute('href'));
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
 </body>
-</html>
 
+</html>
 
