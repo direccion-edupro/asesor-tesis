@@ -341,54 +341,67 @@ function renderAll() {
 renderAll();
 setupInfoListeners(); 
 
-  /* ====== Exportar/Importar/Reset (opcionales) ====== */
-  var resetBtn  = document.getElementById('reset-btn');
-  var exportBtn = document.getElementById('export-json');
-  var importBtn = document.getElementById('import-json');
+/* ====== Exportar/Importar/Reset (opcionales) ====== */
+var resetBtn = document.getElementById('reset-btn');
+var exportBtn = document.getElementById('export-json');
+var importFileInput = document.getElementById('import-json'); // Corregido para apuntar al input de archivo
 
-  if (resetBtn) {
+if (resetBtn) {
     resetBtn.addEventListener('click', function () {
-      if (confirm('¿Borrar datos locales y reiniciar?')) {
-        localStorage.removeItem(STORAGE_KEY);
-        location.reload();
-      }
+        if (confirm('¿Borrar todo el progreso y reiniciar la aplicación?')) {
+            localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(STUDENT_KEY);
+            location.reload();
+        }
     });
-  }
+}
 
-  if (exportBtn) {
+if (exportBtn) {
     exportBtn.addEventListener('click', function () {
-      var payload = {
-        meta: { app: 'Asesor-Tesis', exportedAt: new Date().toISOString() },
-        student: JSON.parse(localStorage.getItem(STUDENT_KEY) || '{}'),
-        data: thesisData
-      };
-      var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'avance.json';
-      a.click();
-      URL.revokeObjectURL(a.href);
+        var payload = {
+            meta: { app: 'Asesor-Tesis', exportedAt: new Date().toISOString() },
+            student: JSON.parse(localStorage.getItem(STUDENT_KEY) || '{}'),
+            data: thesisData
+        };
+        var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'asesor-tesis-avance.json';
+        a.click();
+        URL.revokeObjectURL(a.href);
     });
-  }
+}
 
-  if (importBtn) {
-    importBtn.addEventListener('click', function () {
-      var inp = document.createElement('input');
-      inp.type = 'file'; inp.accept = 'application/json';
-      inp.onchange = function (e) {
-        var file = e.target.files[0]; if (!file) return;
+if (importFileInput) {
+    importFileInput.addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        if (!file) {
+            return;
+        }
         var reader = new FileReader();
-        reader.onload = function () {
-          var obj = JSON.parse(reader.result);
-          if (obj && obj.data && obj.data.stages) { thesisData = obj.data; saveData(); renderAll(); }
-          if (obj && obj.student) localStorage.setItem(STUDENT_KEY, JSON.stringify(obj.student));
+        reader.onload = function (event) {
+            try {
+                var obj = JSON.parse(event.target.result);
+                if (obj && obj.data && obj.data.stages) {
+                    thesisData = obj.data;
+                    saveData();
+                    renderAll();
+                    alert('¡Progreso importado con éxito!');
+                }
+                if (obj && obj.student) {
+                    localStorage.setItem(STUDENT_KEY, JSON.stringify(obj.student));
+                    renderAll(); // Para actualizar los campos del estudiante
+                }
+            } catch (error) {
+                alert('Error: El archivo no es válido o está corrupto.');
+            }
         };
         reader.readAsText(file);
-      };
-      inp.click();
     });
-  }
-});
+}
+
+}); // Fin del DOMContentLoaded
+
 
 
 
