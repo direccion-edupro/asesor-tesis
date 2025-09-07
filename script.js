@@ -1,368 +1,331 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // ====== CONSTANTES ======
+  'use strict';
+
+  /* ===== Constantes ===== */
   const STORAGE_KEY = 'thesisProgress';
+  const STUDENT_KEY = 'thesisStudent';
 
-  //const defaultThesisData = {
-  stages: [
-    {
-      title: "Fase 1: Elección y Delimitación del Tema",
-      deadline: null,
-      tasks: [
-        { description: "Realizar lluvia de ideas sobre posibles temas.", completed: false },
-        { description: "Investigar antecedentes de los temas seleccionados.", completed: false },
-        { description: "Definir el tema final y delimitar su alcance.", completed: false }
-      ]
-    },
-    {
-      title: "Fase 2: Planteamiento del Problema",
-      deadline: null,
-      tasks: [
-        { description: "Redactar la descripción del problema.", completed: false },
-        { description: "Formular la pregunta de investigación principal.", completed: false },
-        { description: "Formular preguntas de investigación secundarias.", completed: false },
-        { description: "Escribir la justificación e importancia del estudio.", completed: false }
-      ]
-    },
-    {
-      title: "Fase 3: Construcción del Marco Teórico",
-      deadline: null,
-      tasks: [
-        { description: "Identificar las bases teóricas clave.", completed: false },
-        { description: "Buscar y recopilar literatura relevante (artículos, libros).", completed: false },
-        { description: "Redactar los antecedentes de la investigación.", completed: false },
-        { description: "Desarrollar los conceptos y teorías centrales.", completed: false }
-      ]
-    },
-    {
-      title: "Fase 4: Diseño Metodológico",
-      deadline: null,
-      tasks: [
-        { description: "Definir el enfoque de la investigación (cualitativo, cuantitativo, mixto).", completed: false },
-        { description: "Seleccionar y describir la población y muestra.", completed: false },
-        { description: "Diseñar los instrumentos de recolección de datos.", completed: false },
-        { description: "Describir el procedimiento para el análisis de datos.", completed: false }
-      ]
-    },
-    {
-      title: "Fase 5: Resultados y Discusión",
-      deadline: null,
-      tasks: [
-        { description: "Preparar y depurar los datos / transcripciones.", completed: false },
-        { description: "Realizar el análisis (estadístico o temático).", completed: false },
-        { description: "Generar tablas, figuras y visualizaciones clave.", completed: false },
-        { description: "Redactar resultados y discutirlos con el marco teórico.", completed: false }
-      ]
-    },
-    {
-      title: "Fase 6: Conclusiones y Recomendaciones",
-      deadline: null,
-      tasks: [
-        { description: "Sintetizar hallazgos y responder a la pregunta de investigación.", completed: false },
-        { description: "Redactar conclusiones alineadas con los objetivos.", completed: false },
-        { description: "Formular recomendaciones aplicables (defensa y seguridad).", completed: false },
-        { description: "Presentación y resumen ejecutivo de cierre.", completed: false }
-      ]
-    }
-  ]
-};
-
-
-  // ====== STORAGE ======
-  const loadThesisData  = () => {
-    // ➕ Asegurar que existan Fase 5 y Fase 6 en datos guardados previamente
-(function ensureNewStages() {
-  const have = (t) => thesisData.stages?.some(s => s.title === t);
-
-  if (!have("Fase 5: Resultados y Discusión")) {
-    thesisData.stages.push({
-      title: "Fase 5: Resultados y Discusión",
-      deadline: null,
-      tasks: [
-        { description: "Preparar y depurar los datos / transcripciones.", completed: false },
-        { description: "Realizar el análisis (estadístico o temático).", completed: false },
-        { description: "Generar tablas, figuras y visualizaciones clave.", completed: false },
-        { description: "Redactar resultados y discutirlos con el marco teórico.", completed: false }
-      ]
-    });
-  }
-
-  if (!have("Fase 6: Conclusiones y Recomendaciones")) {
-    thesisData.stages.push({
-      title: "Fase 6: Conclusiones y Recomendaciones",
-      deadline: null,
-      tasks: [
-        { description: "Sintetizar hallazgos y responder a la pregunta de investigación.", completed: false },
-        { description: "Redactar conclusiones alineadas con los objetivos.", completed: false },
-        { description: "Formular recomendaciones aplicables (defensa y seguridad).", completed: false },
-        { description: "Presentación y resumen ejecutivo de cierre.", completed: false }
-      ]
-    });
-  }
-
-  // Guarda el dataset migrado
-  if (typeof saveThesisData === 'function') saveThesisData();
-  else localStorage.setItem(STORAGE_KEY, JSON.stringify(thesisData));
-})();
-
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(defaultThesisData));
+  /* ===== Dataset por defecto (6 fases) ===== */
+  const defaultThesisData = {
+    stages: [
+      {
+        title: "Fase 1: Elección y Delimitación del Tema",
+        deadline: null,
+        tasks: [
+          { description: "Realizar lluvia de ideas sobre posibles temas.", completed: false },
+          { description: "Investigar antecedentes de los temas seleccionados.", completed: false },
+          { description: "Definir el tema final y delimitar su alcance.", completed: false }
+        ]
+      },
+      {
+        title: "Fase 2: Planteamiento del Problema",
+        deadline: null,
+        tasks: [
+          { description: "Redactar la descripción del problema.", completed: false },
+          { description: "Formular la pregunta de investigación principal.", completed: false },
+          { description: "Formular preguntas de investigación secundarias.", completed: false },
+          { description: "Escribir la justificación e importancia del estudio.", completed: false }
+        ]
+      },
+      {
+        title: "Fase 3: Construcción del Marco Teórico",
+        deadline: null,
+        tasks: [
+          { description: "Identificar las bases teóricas clave.", completed: false },
+          { description: "Buscar y recopilar literatura relevante (artículos, libros).", completed: false },
+          { description: "Redactar los antecedentes de la investigación.", completed: false },
+          { description: "Desarrollar los conceptos y teorías centrales.", completed: false }
+        ]
+      },
+      {
+        title: "Fase 4: Diseño Metodológico",
+        deadline: null,
+        tasks: [
+          { description: "Definir el enfoque de la investigación (cualitativo, cuantitativo, mixto).", completed: false },
+          { description: "Seleccionar y describir la población y muestra.", completed: false },
+          { description: "Diseñar los instrumentos de recolección de datos.", completed: false },
+          { description: "Describir el procedimiento para el análisis de datos.", completed: false }
+        ]
+      },
+      {
+        title: "Fase 5: Resultados y Discusión",
+        deadline: null,
+        tasks: [
+          { description: "Preparar y depurar los datos / transcripciones.", completed: false },
+          { description: "Realizar el análisis (estadístico o temático).", completed: false },
+          { description: "Generar tablas, figuras y visualizaciones clave.", completed: false },
+          { description: "Redactar resultados y discutirlos con el marco teórico.", completed: false }
+        ]
+      },
+      {
+        title: "Fase 6: Conclusiones y Recomendaciones",
+        deadline: null,
+        tasks: [
+          { description: "Sintetizar hallazgos y responder a la pregunta de investigación.", completed: false },
+          { description: "Redactar conclusiones alineadas con los objetivos.", completed: false },
+          { description: "Formular recomendaciones aplicables (defensa y seguridad).", completed: false },
+          { description: "Presentación y resumen ejecutivo de cierre.", completed: false }
+        ]
+      }
+    ]
   };
-  const saveThesisData  = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(thesisData));
 
-  let thesisData = loadThesisData();
+  /* ===== Carga/guardado ===== */
+  const deepClone = (x) => JSON.parse(JSON.stringify(x));
+  const loadData = () => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : deepClone(defaultThesisData);
+    } catch { return deepClone(defaultThesisData); }
+  };
+  let thesisData = loadData();
+  const saveData = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(thesisData));
 
-  // ====== DOM ======
-  const roadmapContainer     = document.getElementById('thesis-roadmap');
-  const ganttChartContainer  = document.getElementById('gantt-chart');
+  /* ===== Migración: asegura que existan Fase 5 y 6 si el usuario tenía datos viejos ===== */
+  (function ensureNewStages() {
+    const have = t => thesisData.stages?.some(s => s.title === t);
+    if (!have("Fase 5: Resultados y Discusión")) thesisData.stages.push(deepClone(defaultThesisData.stages[4]));
+    if (!have("Fase 6: Conclusiones y Recomendaciones")) thesisData.stages.push(deepClone(defaultThesisData.stages[5]));
+    saveData();
+  })();
 
-  // ====== PROGRESO GENERAL ======
+  /* ===== Cache de nodos ===== */
+  const roadmapContainer = document.getElementById('thesis-roadmap');
+  const ganttChartContainer = document.getElementById('gantt-chart');
+
+  /* ===== Progreso general ===== */
   function updateOverallProgress() {
     let total = 0, done = 0;
-    (thesisData?.stages || []).forEach(s => {
-      (s.tasks || []).forEach(t => {
-        total++;
-        if (t.completed) done++;
-      });
-    });
-
-    const pct  = total ? Math.round((done / total) * 100) : 0;
+    (thesisData.stages || []).forEach(s => (s.tasks || []).forEach(t => {
+      total++; if (t.completed) done++;
+    }));
+    const pct = total ? Math.round((done / total) * 100) : 0;
     const bar  = document.getElementById('progress-bar');
     const text = document.getElementById('progress-text');
-    if (!bar || !text) return;
-
-    bar.style.width = pct + '%';
-    bar.style.background = (pct >= 80) ? '#28a745' : (pct >= 40 ? '#ffc107' : '#dc3545');
-    text.textContent = `Progreso general: ${pct}%`;
+    if (bar) {
+      bar.style.width = pct + '%';
+      bar.style.background = (pct >= 80) ? '#28a745' : (pct >= 40 ? '#ffc107' : '#dc3545');
+    }
+    if (text) text.textContent = `Progreso general: ${pct}%`;
   }
 
-  // ====== TAREAS ======
-  function addTask(stageIndex, description) {
-    const txt = (description || '').trim();
-    if (!txt) return;
-    thesisData.stages[stageIndex].tasks.push({ description: txt, completed: false });
-    saveThesisData();
-    renderAll();
+  /* ===== CRUD de tareas ===== */
+  function toggleTask(si, ti) {
+    thesisData.stages[si].tasks[ti].completed = !thesisData.stages[si].tasks[ti].completed;
+    saveData(); renderAll();
   }
-
-  function deleteTask(stageIndex, taskIndex) {
-    if (!confirm('¿Eliminar esta tarea?')) return;
-    thesisData.stages[stageIndex].tasks.splice(taskIndex, 1);
-    saveThesisData();
-    renderAll();
+  function addTask(si, txt) {
+    const d = (txt || '').trim(); if (!d) return;
+    thesisData.stages[si].tasks.push({ description: d, completed: false });
+    saveData(); renderAll();
   }
-
-  function editTask(stageIndex, taskIndex) {
-    const current = thesisData.stages[stageIndex].tasks[taskIndex].description;
-    const next = prompt('Edita tu tarea:', current);
-    if (next !== null && next.trim() !== '') {
-      thesisData.stages[stageIndex].tasks[taskIndex].description = next.trim();
-      saveThesisData();
-      renderAll();
+  function editTask(si, ti) {
+    const cur = thesisData.stages[si].tasks[ti].description;
+    const n = prompt('Edita tu tarea:', cur);
+    if (n && n.trim()) {
+      thesisData.stages[si].tasks[ti].description = n.trim();
+      saveData(); renderAll();
     }
   }
-
-  function toggleTask(stageIndex, taskIndex) {
-    thesisData.stages[stageIndex].tasks[taskIndex].completed =
-      !thesisData.stages[stageIndex].tasks[taskIndex].completed;
-    saveThesisData();
-    renderAll();
+  function deleteTask(si, ti) {
+    if (!confirm('¿Eliminar tarea?')) return;
+    thesisData.stages[si].tasks.splice(ti, 1);
+    saveData(); renderAll();
   }
 
-  // ====== RENDERIZADO ======
+  /* ===== Render del roadmap ===== */
   function renderRoadmap() {
+    if (!roadmapContainer) return;
     roadmapContainer.innerHTML = '';
-    let previousStageCompleted = true;
+    let prevCompleted = true;
     const today = new Date(); today.setHours(0,0,0,0);
 
-    thesisData.stages.forEach((stage, stageIndex) => {
-      const isStageCompleted = stage.tasks.length > 0 && stage.tasks.every(t => t.completed);
-      const isLocked  = !previousStageCompleted;
-      const isActive  = !isLocked && !isStageCompleted;
-      const isOverdue = isActive && stage.deadline && new Date(stage.deadline) < today;
+    (thesisData.stages || []).forEach((stage, si) => {
+      const isCompleted = stage.tasks?.length > 0 && stage.tasks.every(t => t.completed);
+      const isLocked    = !prevCompleted;
+      const isActive    = !isLocked && !isCompleted;
+      const isOverdue   = isActive && stage.deadline && new Date(stage.deadline) < today;
 
-      const stageElement = document.createElement('div');
-      stageElement.className = 'stage';
-      if (isLocked)        stageElement.classList.add('locked');
-      if (isStageCompleted)stageElement.classList.add('completed');
-      if (isOverdue)       stageElement.classList.add('overdue');
-      if (!isActive)       stageElement.classList.add('collapsed');
+      const stageEl = document.createElement('div');
+      stageEl.className = 'stage';
+      if (isLocked)     stageEl.classList.add('locked');
+      if (isCompleted)  stageEl.classList.add('completed');
+      if (isOverdue)    stageEl.classList.add('overdue');
+      if (!isActive)    stageEl.classList.add('collapsed');
 
-      const stageHeader = document.createElement('div');
-      stageHeader.className = 'stage-header';
-
-      let deadlineText = stage.deadline ? `Fecha Límite: ${stage.deadline}` : 'Sin fecha límite';
-      if (isOverdue) deadlineText = `¡Atrasado! Límite: ${stage.deadline}`;
-      const status = isStageCompleted ? 'Completada' : (isActive ? 'Activa' : 'Bloqueada');
-
-      stageHeader.innerHTML =
+      const header = document.createElement('div');
+      header.className = 'stage-header';
+      const deadlineText = stage.deadline
+        ? (isOverdue ? `¡Atrasado! Límite: ${stage.deadline}` : `Fecha Límite: ${stage.deadline}`)
+        : 'Sin fecha límite';
+      const status = isCompleted ? 'Completada' : (isActive ? 'Activa' : 'Bloqueada');
+      header.innerHTML =
         `<div class="stage-title-container">
            <h2>${stage.title}</h2>
            <span class="deadline-text">${deadlineText}</span>
          </div>
          <span class="status-badge ${status.toLowerCase()}">${status}</span>`;
+      header.addEventListener('click', () => { if (!isLocked) stageEl.classList.toggle('collapsed'); });
+      stageEl.appendChild(header);
 
-      stageHeader.addEventListener('click', () => { if (!isLocked) stageElement.classList.toggle('collapsed'); });
+      const content = document.createElement('div');
+      content.className = 'stage-tasks';
 
-      const contentWrapper = document.createElement('div');
-      contentWrapper.className = 'stage-tasks';
-
-      // Fecha límite
-      if (isActive || isStageCompleted) {
+      if (isActive || isCompleted) {
         const deadlineDiv = document.createElement('div');
         deadlineDiv.className = 'deadline-management';
-        deadlineDiv.innerHTML = `<label for="deadline-${stageIndex}">Establecer Fecha Límite:</label>`;
+        deadlineDiv.innerHTML = `<label for="deadline-${si}">Establecer Fecha Límite:</label>`;
         const dateInput = document.createElement('input');
         dateInput.type  = 'date';
-        dateInput.id    = `deadline-${stageIndex}`;
+        dateInput.id    = `deadline-${si}`;
         dateInput.value = stage.deadline || '';
         dateInput.addEventListener('change', (e) => {
-          thesisData.stages[stageIndex].deadline = e.target.value;
-          saveThesisData();
-          renderAll();
+          thesisData.stages[si].deadline = e.target.value;
+          saveData(); renderAll();
         });
         deadlineDiv.appendChild(dateInput);
-        contentWrapper.appendChild(deadlineDiv);
+        content.appendChild(deadlineDiv);
       }
 
-      // Lista de tareas
-      stage.tasks.forEach((task, taskIndex) => {
-        const taskElement = document.createElement('div');
-        taskElement.className = 'task';
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.id = `task-${stageIndex}-${taskIndex}`;
-        checkbox.checked = task.completed;
-        checkbox.disabled = isLocked;
-        checkbox.addEventListener('change', () => toggleTask(stageIndex, taskIndex));
-
+      (stage.tasks || []).forEach((task, ti) => {
+        const row = document.createElement('div');
+        row.className = 'task';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked  = !!task.completed;
+        cb.disabled = isLocked;
+        cb.addEventListener('change', () => toggleTask(si, ti));
         const label = document.createElement('label');
-        label.setAttribute('for', `task-${stageIndex}-${taskIndex}`);
         label.textContent = task.description;
-
-        taskElement.appendChild(checkbox);
-        taskElement.appendChild(label);
+        row.appendChild(cb); row.appendChild(label);
 
         if (!isLocked) {
-          const actionsDiv = document.createElement('div');
-          actionsDiv.className = 'task-actions';
-
+          const actions = document.createElement('div');
+          actions.className = 'task-actions';
           const editBtn = document.createElement('button');
           editBtn.className = 'task-action-btn';
-          editBtn.innerHTML = '✏️';
           editBtn.title = 'Editar tarea';
-          editBtn.addEventListener('click', () => editTask(stageIndex, taskIndex));
-
-          const deleteBtn = document.createElement('button');
-          deleteBtn.className = 'task-action-btn';
-          deleteBtn.innerHTML = '🗑️';
-          deleteBtn.title = 'Eliminar tarea';
-          deleteBtn.addEventListener('click', () => deleteTask(stageIndex, taskIndex));
-
-          actionsDiv.appendChild(editBtn);
-          actionsDiv.appendChild(deleteBtn);
-          taskElement.appendChild(actionsDiv);
+          editBtn.textContent = '✏️';
+          editBtn.addEventListener('click', () => editTask(si, ti));
+          const delBtn = document.createElement('button');
+          delBtn.className = 'task-action-btn';
+          delBtn.title = 'Eliminar tarea';
+          delBtn.textContent = '🗑️';
+          delBtn.addEventListener('click', () => deleteTask(si, ti));
+          actions.appendChild(editBtn); actions.appendChild(delBtn);
+          row.appendChild(actions);
         }
-
-        contentWrapper.appendChild(taskElement);
+        content.appendChild(row);
       });
 
-      // Form para agregar tarea
       if (!isLocked) {
-        const addTaskDiv = document.createElement('div');
-        addTaskDiv.className = 'add-task-form';
-
-        const taskInput = document.createElement('input');
-        taskInput.type = 'text';
-        taskInput.placeholder = 'Añadir nueva tarea...';
-        taskInput.id = `add-task-input-${stageIndex}`;
-
-        const addBtn = document.createElement('button');
-        addBtn.textContent = 'Añadir';
-
-        const doAdd = () => {
-          const input = document.getElementById(`add-task-input-${stageIndex}`);
-          addTask(stageIndex, input.value);
-          input.value = '';
-          input.focus();
-        };
-
-        addBtn.addEventListener('click', doAdd);
-        taskInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); doAdd(); } });
-
-        addTaskDiv.appendChild(taskInput);
-        addTaskDiv.appendChild(addBtn);
-        contentWrapper.appendChild(addTaskDiv);
+        const addDiv = document.createElement('div');
+        addDiv.className = 'add-task-form';
+        const inp = document.createElement('input');
+        inp.type = 'text'; inp.placeholder = 'Añadir nueva tarea...';
+        const btn = document.createElement('button');
+        btn.type = 'button'; btn.textContent = 'Añadir';
+        const doAdd = () => { addTask(si, inp.value); inp.value = ''; inp.focus(); };
+        btn.addEventListener('click', doAdd);
+        inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doAdd(); } });
+        addDiv.appendChild(inp); addDiv.appendChild(btn);
+        content.appendChild(addDiv);
       }
 
-      stageElement.appendChild(stageHeader);
-      stageElement.appendChild(contentWrapper);
-      roadmapContainer.appendChild(stageElement);
-
-      previousStageCompleted = isStageCompleted;
+      stageEl.appendChild(content);
+      roadmapContainer.appendChild(stageEl);
+      prevCompleted = isCompleted;
     });
   }
 
-  // Gantt (tu versión compacta)
+  /* ===== Gantt ===== */
   function renderGanttChart() {
-    const stagesWithDeadlines = thesisData.stages.filter(s => s.deadline);
-    if (stagesWithDeadlines.length === 0) {
-      ganttChartContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">Establece fechas límite para ver el cronograma.</p>';
+    if (!ganttChartContainer) return;
+    ganttChartContainer.innerHTML = '';
+    const withDates = (thesisData.stages || []).filter(s => s.deadline);
+    if (withDates.length === 0) {
+      ganttChartContainer.innerHTML =
+        '<p style="grid-column:1/-1;text-align:center;">Establece fechas límite para ver el cronograma.</p>';
       return;
     }
-    ganttChartContainer.innerHTML = '';
+    const day = 86400000;
+    let projectStart = new Date(); projectStart.setHours(0,0,0,0);
+    const projectEnd = new Date(Math.max(...withDates.map(s => new Date(s.deadline))));
+    const totalDays = Math.max(1, Math.ceil((projectEnd - projectStart) / day) + 1);
+    let last = projectStart;
 
-    const dayInMillis = 86400000;
-    let projectStartDate = new Date();
-    const projectEndDate = new Date(Math.max(...stagesWithDeadlines.map(s => new Date(s.deadline))));
-    const totalProjectDays = Math.ceil((projectEndDate - projectStartDate) / dayInMillis) + 1;
-
-    let lastDeadline = projectStartDate;
-    thesisData.stages.forEach(stage => {
+    (thesisData.stages || []).forEach(stage => {
       if (!stage.deadline) return;
-
-      const stageStartDate = new Date(lastDeadline);
-      const stageEndDate   = new Date(stage.deadline);
-
-      const startOffsetDays  = Math.max(0, Math.ceil((stageStartDate - projectStartDate) / dayInMillis));
-      const stageDurationDays= Math.max(1, Math.ceil((stageEndDate - stageStartDate) / dayInMillis));
-
-      const barStartPercent  = (startOffsetDays / totalProjectDays) * 100;
-      const barWidthPercent  = (stageDurationDays / totalProjectDays) * 100;
-
+      const start = new Date(last);
+      const end   = new Date(stage.deadline);
+      const startOffset = Math.max(0, Math.ceil((start - projectStart) / day));
+      const duration    = Math.max(1, Math.ceil((end - start) / day));
       const label = document.createElement('div');
       label.className = 'gantt-label';
       label.textContent = (stage.title.split(':')[1] || stage.title).trim();
-
       const row = document.createElement('div');
       row.className = 'gantt-row';
-
       const bar = document.createElement('div');
       bar.className = 'gantt-bar';
-      bar.style.left  = `${barStartPercent}%`;
-      bar.style.width = `${barWidthPercent}%`;
-
-      const isStageCompleted = stage.tasks.every(t => t.completed);
-      const isOverdue = !isStageCompleted && new Date(stage.deadline) < new Date();
-      if (isStageCompleted) bar.classList.add('completed');
-      if (isOverdue)       bar.classList.add('overdue');
-
+      bar.style.left  = (startOffset / totalDays * 100) + '%';
+      bar.style.width = (duration    / totalDays * 100) + '%';
+      const isCompleted = stage.tasks?.every(t => t.completed);
+      const isOverdue   = !isCompleted && new Date(stage.deadline) < new Date();
+      if (isCompleted) bar.classList.add('completed');
+      if (isOverdue)   bar.classList.add('overdue');
       row.appendChild(bar);
       ganttChartContainer.appendChild(label);
       ganttChartContainer.appendChild(row);
-
-      lastDeadline = stage.deadline;
+      last = stage.deadline;
     });
   }
 
-  // Orquestador
-  function renderAll() {
-    renderRoadmap();
-    renderGanttChart();
-    updateOverallProgress();
+  /* ===== Orquesta ===== */
+  function renderAll() { renderRoadmap(); renderGanttChart(); updateOverallProgress(); }
+  renderAll();
+
+  /* ===== Botones opcionales (no fallan si no existen) ===== */
+  const resetBtn  = document.getElementById('reset-btn');
+  const exportBtn = document.getElementById('export-json');
+  const importBtn = document.getElementById('import-json');
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (confirm('¿Borrar datos locales y reiniciar?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    });
   }
 
-  // Primera pinta
-  renderAll();
-});
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      const payload = {
+        meta: { app: 'Asesor-Tesis', exportedAt: new Date().toISOString() },
+        student: JSON.parse(localStorage.getItem(STUDENT_KEY) || '{}'),
+        data: thesisData
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'avance.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+  }
 
+  if (importBtn) {
+    importBtn.addEventListener('click', () => {
+      const inp = document.createElement('input');
+      inp.type = 'file'; inp.accept = 'application/json';
+      inp.onchange = async e => {
+        const file = e.target.files[0]; if (!file) return;
+        const txt  = await file.text();
+        const obj  = JSON.parse(txt);
+        if (obj.data?.stages) { thesisData = obj.data; saveData(); renderAll(); }
+        if (obj.student) localStorage.setItem(STUDENT_KEY, JSON.stringify(obj.student));
+      };
+      inp.click();
+    });
+  }
+});
